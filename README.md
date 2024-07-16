@@ -18,8 +18,7 @@ Note that if you annotate a fragment with "@AndroidEntryPoint", you must annotat
 3. In the modules you have to add @InstallIn(ActivityComponent::class) (hilt.ActivityComponent) so Hilt knows into which component I want that module to install. (refer to below Hilt component	Injector for)
 4. If you need scoping, Hilt already has pre-defined scopes: https://developer.android.com/training/dependency-injection/hilt-android#component-scopes
 You can also rename these scopes using e.g., AliasOf(Singleton::class)
-5. 
-6. Flutter, iOS
+
 
 ------------------------------------------------------
 https://developer.android.com/training/dependency-injection/hilt-android#component-default
@@ -68,6 +67,20 @@ private val ourViewModel: OurViewModel by viewModels()
             HiltExampleTheme {
                 ourViewModel.doSomething()
 
+Do NOT use ViewmodelProvider like in Dagger:
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+@Inject lateinit var fT : FTest
+
+private lateinit var ourViewModel : OurViewModel
+
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+setContent {
+ourViewModel = ViewModelProvider(this).get(OurViewModel::class.java)
+
+because:
+Bypassing Hilt's ViewModel Factory: When you use ViewModelProvider(this).get(OurViewModel::class.java), you are directly using the default ViewModelProvider, which doesn't know how to handle Hilt's dependency injection. This means your OurViewModel won't receive the dependencies (like UserRepository and SavedStateHandle) that you've annotated with @Inject and @Assisted.
 
 
 5- If you want to use SavedStateHandle: (see this project)
