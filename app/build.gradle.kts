@@ -74,6 +74,12 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
+
+    // ViewModel dependency
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.2.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+
+
     //Retrofit:
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
 

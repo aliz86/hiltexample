@@ -44,3 +44,143 @@ ViewWithFragmentComponent	View annotated with @WithFragmentBindings
 ServiceComponent	Service
 
 Note: Hilt doesn't generate a component for broadcast receivers because Hilt injects broadcast receivers directly from SingletonComponent.
+-------------------------------------------------------
+
+Hilt and ViewModels:
+1- first of all for using Hilt with viewmodel, add these dependencoes to app build.gradle:
+implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.2.0")
+kapt("androidx.hilt:hilt-compiler:1.2.0")
+
+2- add @HiltViewModel above the viewmodel class
+
+3- Then add module installin...:
+@Module
+@InstallIn(ViewModelComponent::class)
+class MyDiModule
+
+4- You annotate your Activity with @AndroidEntryPoint and use these lines like in this project:
+
+private val ourViewModel: OurViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            HiltExampleTheme {
+                ourViewModel.doSomething()
+
+
+
+5- If you want to use SavedStateHandle: (see this project)
+
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import com.example.hiltexample.model.UserRepository
+import dagger.assisted.Assisted
+
+import javax.inject.Inject
+
+
+class OurViewModel @Inject constructor(private val userRepository: UserRepository,
+@Assisted savedStateHandle: SavedStateHandle
+)  : ViewModel() {
+
+
+}
+
+*Attention: SavedStateHandle
+
+-------------------------------------
+
+Hilt complete adding dependency guide:
+
+To use Hilt in your Android project, including ViewModels, you need to add several dependencies to your Gradle files:
+
+**1. Project-Level `build.gradle` (or `build.gradle.kts`):**
+
+* Add the Hilt Android Gradle plugin in the `plugins` block of your project-level `build.gradle` (if you are using the older `groovy` based gradle file):
+
+   ```groovy
+   plugins {
+       // ... other plugins
+
+       id 'com.google.dagger.hilt.android' version '2.48' apply false // Use the latest version available
+   }
+   ```
+
+* Or add it to your `build.gradle.kts` file (if you are using the newer `kotlin` based gradle files)
+
+   ```kotlin
+   plugins {
+       // ... other plugins
+
+       id("com.google.dagger.hilt.android") version "2.48" apply false // Use the latest version available
+   }
+   ```
+
+* In the same file, make sure you have the Google Maven repository in your `buildscript` block:
+
+   ```groovy
+   buildscript {
+       repositories {
+           // ... other repositories
+           google()  
+       }
+       // ...
+   }
+   ```
+
+**2. Module-Level `build.gradle` (or `build.gradle.kts`):**
+
+* Apply the Hilt plugin at the top of your **app module's** `build.gradle` (or `build.gradle.kts`) file:
+
+   ```groovy
+   apply plugin: 'com.android.application'
+   apply plugin: 'kotlin-android' 
+   apply plugin: 'kotlin-kapt' // If you're using kapt for annotation processing
+   apply plugin: 'dagger.hilt.android.plugin'
+   ```
+
+* Add the necessary Hilt dependencies. In the same module-level Gradle file, add these to the `dependencies` block:
+
+   ```groovy
+   dependencies {
+       implementation("com.google.dagger:hilt-android:2.48") // Use the latest version available
+       kapt("com.google.dagger:hilt-android-compiler:2.48")  // Use the latest version available
+
+       // ViewModel dependency
+       implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+       kapt("androidx.hilt:hilt-compiler:1.0.0-alpha03")
+
+       // ... other dependencies ...
+   }
+   ```
+
+**3. AndroidManifest.xml:**
+
+* Add the Hilt Android App component to your `AndroidManifest.xml` file within the `<application>` tag:
+
+   ```xml
+   <application
+       ... 
+       android:name="dagger.hilt.android.HiltAndroidApp"> 
+
+       ... 
+   </application>
+   ```
+
+**Important Notes:**
+
+* **Version Consistency:** Ensure that the Hilt versions (e.g., `2.48`) used in your project-level and app-level `build.gradle` files are the same.
+* **Synchronization:** After making these changes, synchronize your project with Gradle files (usually prompted automatically by Android Studio).
+* **ViewModel Injection:** With the `hilt-lifecycle-viewmodel` dependency added, you can now inject dependencies into your ViewModels using `@HiltViewModel` and `@Inject`:
+
+   ```kotlin
+   @HiltViewModel
+   class MyViewModel @Inject constructor(
+       private val repository: MyRepository
+   ) : ViewModel() { 
+       // ...
+   }
+   ```
+
+Once you've completed these steps, rebuild your project. Now you can start using Hilt for dependency injection, including injecting dependencies into your ViewModels.
