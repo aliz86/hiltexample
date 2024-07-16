@@ -20,13 +20,21 @@ Note that if you annotate a fragment with "@AndroidEntryPoint", you must annotat
 6. Flutter, iOS
 
 Hilt component	Injector for
+
 SingletonComponent	Application
+
 ActivityRetainedComponent	N/A
+
 ViewModelComponent	ViewModel
+
 ActivityComponent	Activity
+
 FragmentComponent	Fragment
+
 ViewComponent	View
+
 ViewWithFragmentComponent	View annotated with @WithFragmentBindings
+
 ServiceComponent	Service
 
 Note: Hilt doesn't generate a component for broadcast receivers because Hilt injects broadcast receivers directly from SingletonComponent.
