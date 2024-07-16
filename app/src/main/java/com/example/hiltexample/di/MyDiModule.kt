@@ -13,8 +13,8 @@ import dagger.hilt.android.components.ViewModelComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-@InstallIn(ViewModelComponent::class)
 @Module
+@InstallIn(ViewModelComponent::class)
 class MyDiModule (/*i : Int*/) {
 
     @Provides
