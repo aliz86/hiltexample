@@ -1,6 +1,7 @@
 Component structure, scopes, bindings
 
-Hilt assumes you will not be using your own components, but instead will be using Hilt predefined components,
+Hilt assumes you will not be using your own components, but instead will be using Hilt predefined components.
+So you will define modules and Hilt has already defined the components.
 Same goes with scopes
 https://developer.android.com/training/dependency-injection/hilt-android#component-hierarchy
 Also, binding means what object you get for free with that component. For example with AppComponent you get the "Application" object.
@@ -14,10 +15,15 @@ Instead, whenever you want to use the injection, you use @AndroidEntryPoint (in 
 Note that if you annotate a fragment with "@AndroidEntryPoint", you must annotate its activity with @AndroidEntryPoint , too.
 
 -- So, by far, you can use inject service in both application and other classes (in application via @HiltAndroidApp and other classes via @AndroidEntryPoint)
-3. In the modules you have to add @InstallIn(ActivityComponent::class) (hilt.ActivityComponent) so Hilt knows into which component I want that module to install.
-4. 
+3. In the modules you have to add @InstallIn(ActivityComponent::class) (hilt.ActivityComponent) so Hilt knows into which component I want that module to install. (refer to below Hilt component	Injector for)
+4. If you need scoping, Hilt already has pre-defined scopes: https://developer.android.com/training/dependency-injection/hilt-android#component-scopes
+You can also rename these scopes using e.g., AliasOf(Singleton::class)
 5. 
 6. Flutter, iOS
+
+------------------------------------------------------
+https://developer.android.com/training/dependency-injection/hilt-android#component-default
+This shows that if I have a module with for eaxmple, @InstallIn(ActivityComponent::class), I can get the activity instance (and even xast it to AppCompatActivity or ComponentActivity depending on my application) inside the module. refer to this project class: ActivityModule
 
 Hilt component	Injector for
 

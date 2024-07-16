@@ -1,5 +1,7 @@
 package com.example.hiltexample.di
 
+import android.app.Activity
+import androidx.activity.ComponentActivity
 import com.example.hiltexample.model.testClasses.otherclasses.ETest
 import com.example.hiltexample.model.testClasses.otherclasses.FTest
 import dagger.Module
@@ -11,6 +13,10 @@ import dagger.hilt.android.components.ActivityComponent
 @InstallIn(ActivityComponent::class)
 class ActivityModule {
 
+
+    @Provides
+    //fun appCompatActivity(activity : Activity) = activity as AppCompatActivity
+    fun appCompatActivity(activity : Activity) = activity as ComponentActivity
 
     @Provides
     fun eTest() = ETest()
