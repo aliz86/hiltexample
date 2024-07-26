@@ -197,3 +197,5 @@ To use Hilt in your Android project, including ViewModels, you need to add sever
    ```
 
 Once you've completed these steps, rebuild your project. Now you can start using Hilt for dependency injection, including injecting dependencies into your ViewModels.
+-----------------------------------
+Understanding @Binds Annotation: The @Binds annotation is used in Hilt to bind an implementation class to its corresponding interface. It is particularly useful when you have an interface and multiple implementations, and you want to specify which implementation should be used for dependency injection.
